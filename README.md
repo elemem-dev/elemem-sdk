@@ -32,7 +32,7 @@
 ### 3.1 驱动安装
 
 ```bash
-wget https://github.com/elemem/release/v2.0/hilbert_driver_v2.0.0.deb
+wget https://github.com/elemem-dev/elemem-sdk/release/v2.0/hilbert_driver_v2.0.0.deb
 sudo dpkg -i hilbert_driver_v2.0.0.deb
 modprobe hilbert
 ```
@@ -56,14 +56,17 @@ curl http://localhost:8000/health # 返回ok说明安装成功
 
 ```
 # 下载 SDK 工程代码
-git clone https://github.com/elemem/sdk-demo.git
+git clone https://github.com/elemem-dev/elemem-sdk.git
 # 工程目录结构如下
 - demo
 - docker-compose.yml
+
 # docker 部署运行环境
 docker compose up -d
+
 # 查看运行状态
 docker compose ps
+
 # 运行 SDK Demo
 $ docker exec -it elemem_sdk_demo /bin/bash && cd elemem_sdk_demo
 $ python3 sdk_demo.py
