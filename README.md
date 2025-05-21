@@ -110,10 +110,48 @@ index.load(b"my_index")
 ## 5. C++ 接口说明
 
 ### 5.1 初始化
-### 5.2 添加向量
-### 5.3 搜索向量
-### 5.4 保存/加载向量
-
+```c++
+hilbert::HilbertClient client;
+client.init("127.0.0.1:8000");
+```
+### 5.2 创建索引
+```c++
+std::string name = "test_index";
+uint32_t dim = 128;
+uint32_t dim_ddr = 128;
+hilbert::DdrDataType ddr_data_type = hilbert::DdrDataType::FP16;
+hilbert::BaseDataType base_data_type = hilbert::BaseDataType::FP32;
+uint32_t replica_num = 1;
+hilbert::SearchType search_type = hilbert::SearchType::IVF;
+client.create_index(name, dim, dim_ddr, ddr_data_type, base_data_type, replica_num, search_type);
+```
+### 5.3 添加向量
+```c++
+std::vector<float> xbs(dim * 10, 0.5);
+client.add(name, 10, xbs, hilbert::StorageDevice::FPGA);
+```
+### 5.4 搜索向量
+```c++
+uint32_t nq = 1;
+std::vector<float> query(dim, 0.5);
+uint32_t nprob = 10;
+uint32_t k = 5;
+client.search(name, nq, query, nprob, k);
+```
+### 5.5 删除向量
+```c++
+uint64_t id = 1;
+client.Delete(name, id);
+```
+### 5.6 更新向量
+```c++
+std::vector<float> data(dim, 0.5);
+client.update(name, id, data);
+```
+### 5.7 删除索引
+```c++
+client.delete_index(name, hilbert::StorageDevice::FPGA);
+```
 ## 6. 调试与性能分析
 
 日志路径：
