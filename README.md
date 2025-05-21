@@ -74,30 +74,84 @@ $ ./sdk_demo
 ```
 ---
 
-## 4. Python 接口说明
+
+## 4. C++ 接口说明
 
 ### 4.1 初始化
+```c++
+hilbert::HilbertClient client;
+client.init("127.0.0.1:8000");
+```
+### 4.2 创建索引
+```c++
+std::string name = "test_index";
+uint32_t dim = 128;
+uint32_t replica_num = 1;
+hilbert::SearchType search_type = hilbert::SearchType::IVF;
+client.create_index(name, dim, replica_num, search_type);
+```
+### 4.3 删除索引
+```c++
+client.delete_index(name);
+```
+### 4.4 查询索引
+```c++
+std::vector<hilbert::Index> indices;
+client.query_all_index(indices);
+```
+### 4.5 添加向量
+```c++
+std::vector<float> xbs(dim * 10, 0.5);
+client.add(name, 10, dim, xbs);
+```
+### 4.6 搜索向量
+```c++
+uint32_t nq = 1;
+std::vector<float> query(dim, 0.5);
+uint32_t nprob = 10;
+uint32_t k = 5;
+client.search(name, nq, dim, query.data(), nprob, k);
+```
+### 4.7 删除向量
+```c++
+uint64_t id = 1;
+client.Delete(name, id);
+```
+### 4.8 更新向量
+```c++
+std::vector<float> new_vec(dim, 0.5);
+client.update(name, id, dim, new_vec.data());
+```
+### 4.9 查询向量
+```c++
+std::vector<float> vec;
+client.query(name, id, vec);
+```
+
+## 5. Python 接口说明
+
+### 5.1 初始化
 
 ```python
 import hilbert
 hilbert.hilbert_init()
 ```
 
-### 4.2 添加向量
+### 5.2 添加向量
 
 ```python
 index = hilbert.BFIndex(dim=128)
 index.full_add(nb=1000, base=hilbert.swig_ptr(vectors), sync=True)
 ```
 
-### 4.3 搜索向量
+### 5.3 搜索向量
 
 ```python
 index.full_search(nq=10, query=hilbert.swig_ptr(q), k=100,
                   distance=hilbert.swig_ptr(d), labels=hilbert.swig_ptr(l))
 ```
 
-### 4.4 保存/加载索引
+### 5.4 保存/加载索引
 
 ```python
 index.save(b"my_index")
@@ -106,52 +160,6 @@ index.load(b"my_index")
 
 ---
 
-
-## 5. C++ 接口说明
-
-### 5.1 初始化
-```c++
-hilbert::HilbertClient client;
-client.init("127.0.0.1:8000");
-```
-### 5.2 创建索引
-```c++
-std::string name = "test_index";
-uint32_t dim = 128;
-uint32_t dim_ddr = 128;
-hilbert::DdrDataType ddr_data_type = hilbert::DdrDataType::FP16;
-hilbert::BaseDataType base_data_type = hilbert::BaseDataType::FP32;
-uint32_t replica_num = 1;
-hilbert::SearchType search_type = hilbert::SearchType::IVF;
-client.create_index(name, dim, dim_ddr, ddr_data_type, base_data_type, replica_num, search_type);
-```
-### 5.3 添加向量
-```c++
-std::vector<float> xbs(dim * 10, 0.5);
-client.add(name, 10, xbs, hilbert::StorageDevice::FPGA);
-```
-### 5.4 搜索向量
-```c++
-uint32_t nq = 1;
-std::vector<float> query(dim, 0.5);
-uint32_t nprob = 10;
-uint32_t k = 5;
-client.search(name, nq, query, nprob, k);
-```
-### 5.5 删除向量
-```c++
-uint64_t id = 1;
-client.Delete(name, id);
-```
-### 5.6 更新向量
-```c++
-std::vector<float> data(dim, 0.5);
-client.update(name, id, data);
-```
-### 5.7 删除索引
-```c++
-client.delete_index(name, hilbert::StorageDevice::FPGA);
-```
 ## 6. 调试与性能分析
 
 日志路径：
