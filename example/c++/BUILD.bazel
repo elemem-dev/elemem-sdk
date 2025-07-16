@@ -1,0 +1,21 @@
+cc_import(
+    name           = "hilbert_client",
+    hdrs           = ["include/hilbert_client.h"],
+    shared_library = "lib/libhilbert_client.so",
+)
+
+cc_binary(
+    name = "hilbert_client_demo",
+    deps = [
+        ":hilbert_client",
+    ],
+    srcs = glob([
+        "hilbert_client_demo.cpp"
+    ]),
+    copts = [
+        "-std=c++20",
+        "-g",
+        "-Og",
+        "-Iinclude",
+    ],
+)
