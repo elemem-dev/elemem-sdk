@@ -9,6 +9,7 @@ Hello elem-smi~
 
 Usage: elem-smi [OPTIONS]
 
+```
 Options:
   -L, --list-elem                      列出所有扫描到的 card的所有信息
   -f, --filename <f>                   打印到日志而不是标准输出
@@ -36,6 +37,8 @@ Options:
   -h, --help                           Print help
   -V, --version                        Print version
 
+```
+```
 其他参数
 
   -h, --help                           Print help
@@ -54,11 +57,11 @@ Options:
 -l 不加表示只打印一次，加则表示每间隔x秒打印一次，建议使用-l 1
 
 -f 不加则表示打印到终端，加则输出到指定文件路径，若同时加上了-l参数，则每次打印会覆盖之前的内容，使用如vscode能实时更新的文本编辑器打开可以看到数据实时刷新。
-
+```
 信息查看
 
 完整信息
-
+```
 辅助参数:全部正常生效。
 
     ~ elem-smi -L
@@ -155,7 +158,7 @@ Options:
 +-------------------------+--------------------+-----------------------+-------------------------+-------------------------+
 |            0            |         0          |           0           |            0            |            0            |
 +-------------------------+--------------------+-----------------------+-------------------------+-------------------------+
-
+```
 单个查看
 
 辅助参数:全部正常生效。
@@ -228,7 +231,7 @@ Speed 8.0GT/s, Width x4
 0
     ~ elem-smi -q -d driver.c2h.packing.rate -i 0
 0
-
+```
 除此之外-d还拥有几个-L中没有显示的调试信息
 
     ~ elem-smi -q -d timestamp -i 0
@@ -286,7 +289,7 @@ group 21 reading_efficiency 0.00%   exclusive_ratio 0.00% bandwidth_utilization 
 group 22 reading_efficiency 0.00%   exclusive_ratio 0.00% bandwidth_utilization 0.00%
 group 23 reading_efficiency 0.00%   exclusive_ratio 0.00% bandwidth_utilization 0.00%
 group 24 reading_efficiency 0.00%   exclusive_ratio 0.00% bandwidth_utilization 0.00%
-
+```
 各层收发包数查看
 
 辅助参数:因为三元组中已经指定了card信息，因此-i参数无效，其他有效。
@@ -296,7 +299,7 @@ group 24 reading_efficiency 0.00%   exclusive_ratio 0.00% bandwidth_utilization 
 第一个参数是card序号，范围是0-7，第二个group序号，范围是0-25，第三个序号是chip序号，范围是0-2。
 
 
-
+```
 DNA查看
 
 辅助参数:全部正常生效。
@@ -307,7 +310,7 @@ DNA查看
 +------------+------------+----------------------------------+
 |     0      | 1665656026 | 000000004002000001718B6305602505 |
 +------------+------------+----------------------------------+
-
+```
 卡灯闪烁
 
 辅助参数:无输出，因此-f参数无效，且指令是单次的，因此-l参数也无效。必须要指定卡号，因此-i参数必须添加。
@@ -392,7 +395,7 @@ DNA查看
 缓存统计
 
 辅助参数:因为实际刷新时间和采样参数有关，因此-l参数无效，其他有效。
-
+```
     ~ elem-smi --buff_stat 10000 --buff_interval 10
 总采样时间过短（buff_stat * buff_interval < 1s），请增加采样次数或采样间隔！
     ~ elem-smi --buff_stat 10000 --buff_interval 100
@@ -407,4 +410,4 @@ DNA查看
 +------------+-------+----------+----------+----------+------+----------+
 
 
-
+```
