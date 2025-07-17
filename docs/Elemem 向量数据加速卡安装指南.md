@@ -12,11 +12,10 @@
 1. [安装前准备](#安装前准备)
 2. [硬件安装](#硬件安装)
 3. [驱动程序安装](#驱动程序安装)
-4. [系统配置](#系统配置)
-5. [验证测试](#验证测试)
+4. [固件程序安装](#固件程序安装)
+5. [系统配置](#系统配置)
 6. [故障排除](#故障排除)
-7. [技术支持](#技术支持)
-8. [注意事项](#注意事项)
+7. [注意事项](#注意事项)
 
 ---
 
@@ -27,16 +26,16 @@
 - Ubuntu 24.04 LTS
 
 **硬件要求**
-- CPU：AMD Ryzen 5 以上
-- 内存：至少 16GB RAM（推荐 256GB）
-- 主板：支持 PCIe 3.0 x16 或 PCIe 4.0 x16 插槽
+- CPU：AMD EPYC Rome 7H12（2.60G/256M/64C/128T/280W）
+- 内存：内存 32GB DDR4 ECC RDIMM * 4
+- 主板：支持 PCIe 3.0 x4
 - 电源：至少 650W（推荐 750W 80+ 金牌认证）
-- 机箱：支持双槽显卡，长度不少于 300mm
+- 硬盘：SSD 960GB U.2 2.5 Nvme 读取密集型 * 2 + HDD 6T SATA 企业级 3.5 7200 * 3
+- 机箱：支持双槽显卡
 
 ### 工具准备
 - 十字螺丝刀
 - 防静电手套或防静电腕带
-- 清洁布
 
 ---
 
@@ -59,7 +58,7 @@
 
 ### 第四步：安装加速卡
 1. 拆除机箱后挡板对应位置的挡片
-2. 小心取出Elemem加速卡，避免触碰金手指
+2. 取出Elemem加速卡，避免触碰金手指
 3. 将加速卡垂直插入PCIe插槽
 4. 确保卡牢固插入，听到"咔哒"声
 5. 使用螺丝将加速卡固定在机箱挡板上
@@ -73,27 +72,35 @@
 
 ## 驱动程序安装
 
-### Linux系统安装步骤
-
 **Ubuntu系统**
 ```bash
 # 更新包管理器
 sudo apt update
 
-# 安装依赖包
-sudo apt install dkms build-essential
-
 # 下载驱动包
-wget https://download.elemem.com/drivers/linux/elemem-driver-latest.deb
+wget ...
 
 # 安装驱动
-sudo dpkg -i elemem-driver-latest.deb
+sudo dpkg -i xxx.deb
 
 # 重启系统
 sudo reboot
 ```
+--
 
----
+## 固件程序安装
+
+```bash
+# 下载固件包
+wget ...
+
+# 安装固件
+sudo elem-update elem-fireware-2.0.0
+
+# 重启系统
+sudo reboot
+
+```
 
 ## 系统配置
 
@@ -102,101 +109,24 @@ sudo reboot
 **检查设备状态**
 ```bash
 # 查看设备信息
-lspci | grep Elemem
+lspci | grep Xi
 
 # 检查驱动加载
-lsmod | grep elemem
+lsmod | grep elem
 
 # 查看设备状态
-elemem-smi
-```
-
-**环境变量设置**
-```bash
-# 编辑环境变量
-sudo nano /etc/environment
-
-# 添加以下内容
-ELEMEM_DRIVER_PATH=/usr/local/elemem
-PATH=$PATH:$ELEMEM_DRIVER_PATH/bin
-```
-
----
-
-## 验证测试
-
-### 基本功能测试
-
-**Linux测试**
-```bash
-# 运行系统测试
-elemem-test --system-check
-
-# 性能基准测试
-elemem-benchmark --full-test
+elem-smi -L
 
 # 温度监控
-elemem-smi --temperature
+elem-smi -q -d temp -i 0 -l 1
 ```
-
-### 性能验证指标
-- 加速卡使用率：应能达到90%以上
-- 内存使用率：正常范围内
-- 温度：不超过65°C
-- 功耗：在规格范围内
 
 ---
 
 ## 故障排除
 
 ### 常见问题及解决方案
-
-**问题1：系统无法识别加速卡**
-- 检查PCIe插槽连接是否牢固
-- 确认电源供电充足
-- 重新安装驱动程序
-
-**问题2：性能异常**
-- 检查散热是否良好
-- 确认电源功率足够
-- 更新到最新驱动版本
-
-**问题3：系统不稳定**
-- 检查内存是否充足
-- 确认主板BIOS版本兼容
-- 降低超频设置
-
-**问题4：温度过高**
-- 清理灰尘，改善散热
-- 检查风扇是否正常工作
-- 调整机箱风道设计
-
-### 日志收集
-当遇到问题时，请收集以下信息：
-- 系统规格和配置
-- 驱动版本信息
-- 错误日志文件
-- 温度和功耗数据
-
----
-
-## 技术支持
-
-### 联系方式
-- **官方网站**：www.elemem.tech
-- **技术支持邮箱**：support@elemem.tech
-
-### 保修政策
-- 保修期：3年全球联保
-- 保修范围：制造缺陷和材料问题
-- 不保修：人为损坏、意外事故
-
-### 社区支持
-- 官方论坛：forum.elemem.com
-- QQ技术群：123456789
-- 微信公众号：Elemem科技
-
----
+见 [加速卡常见问题](./Elemem%20向量数据加速卡常见问题.md)
 
 ## 注意事项
 
@@ -218,6 +148,3 @@ elemem-smi --temperature
 - 根据需要调整设置
 
 ---
-
-*本文档最后更新时间：2025年7月16日*  
-*版权所有 © 北京忆元科技有限公司*
