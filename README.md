@@ -10,7 +10,7 @@
 
 - [ElememSDK 客户端编程接口](docs/elemem_api_docs.md)
 - [ElememSDK Demo使用说明-Python](docs/ElememSDK%20Demo使用说明文档-Python.md)
-- [ElememSDK Demo使用说明-C++](docs/ElememSDK%20Demo使用说明文档-Python.md)
+- [ElememSDK Demo使用说明-C++](docs/ElememSDK%20Demo使用说明文档-C++.md)
 
 ## 3.版本说明
 - [Elemem 向量数据加速卡软硬件版本说明书](docs/Elemem%20向量数据加速卡软硬件版本说明书.md)
