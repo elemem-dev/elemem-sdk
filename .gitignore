@@ -1,0 +1,5 @@
+release/*
+example/c++/bazel-bin
+example/c++/bazel-c++
+example/c++/bazel-out
+example/c++/bazel-testlogs

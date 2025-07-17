@@ -13,9 +13,8 @@
 2. [硬件安装](#硬件安装)
 3. [驱动程序安装](#驱动程序安装)
 4. [固件程序安装](#固件程序安装)
-5. [系统配置](#系统配置)
-6. [故障排除](#故障排除)
-7. [注意事项](#注意事项)
+5. [故障排除](#故障排除)
+6. [注意事项](#注意事项)
 
 ---
 
@@ -72,47 +71,34 @@
 
 ## 驱动程序安装
 
+下载最新的加速卡程序
+```bash
+# 下载
+wget https://github.com/elemem-dev/elemem-sdk/releases/download/v2.0.1.0/elemem-vector.tar
+
+# 解压
+unzip v2.0.0.1.zip
+
+# 目录结构
+release
+├── elemem-driver-2.0.7.202507161739.run          // 驱动
+├── elemem-firmware-2.0.2.8.bin                   // 固件
+├── elemem_sdk_2.0.1.202507151532_ubuntu24.04.tar // 软件
+```
+
 **Ubuntu系统**
 ```bash
 # 更新包管理器
 sudo apt update
 
-# 下载驱动包
-wget ...
-
 # 安装驱动
-sudo dpkg -i xxx.deb
-
-# 重启系统
-sudo reboot
-```
---
-
-## 固件程序安装
-
-```bash
-# 下载固件包
-wget ...
-
-# 安装固件
-sudo elem-update elem-fireware-2.0.0
-
-# 重启系统
-sudo reboot
-
-```
-
-## 系统配置
-
-### Linux系统配置
-
-**检查设备状态**
-```bash
-# 查看设备信息
-lspci | grep Xi
+sudo bash elemem-driver-2.0.7.202507161739.run
 
 # 检查驱动加载
 lsmod | grep elem
+
+# 输出下面内容说明安装成功
+elem                  110592  5
 
 # 查看设备状态
 elem-smi -L
@@ -121,7 +107,77 @@ elem-smi -L
 elem-smi -q -d temp -i 0 -l 1
 ```
 
----
+elem-smi管理工具更多使用方法见 [Elemem向量加速卡SMI使用手册](./Elemem%20向量数据加速卡%20SMI%20使用手册.pdf)
+
+## 固件程序安装
+
+```bash
+
+# 安装固件
+sudo elem-update elemem-firmware-2.0.2.8.bin
+
+# 重启系统
+sudo reboot
+
+# 查看固件版本
+elem-smi -L
++-------------------------+----------------------------------+-----------------------+-------------------------+-------------------------+
+|        overview         |                                  |                       |                         |                         |
++-------------------------+----------------------------------+-----------------------+-------------------------+-------------------------+
+|       card_index        |            group_num             |       chip_num        |        bank_size        |          alive          |
++-------------------------+----------------------------------+-----------------------+-------------------------+-------------------------+
+|            0            |                26                |          78           |           16            |            1            |
++-------------------------+----------------------------------+-----------------------+-------------------------+-------------------------+
+|      soft_version       |          driver_version          |      smi_version      |    firmware_version     |      fpga_version       |
++-------------------------+----------------------------------+-----------------------+-------------------------+-------------------------+
+|   2.0.0.202507171131    |        2.0.1.202507031525        |  2.0.6.202507141135   |        25070801         |        25071401         |
+```
+
+## 软件安装
+
+``` bash
+# 解压o
+tar xvf elemem_sdk_2.0.1.202507151532_ubuntu24.04.tar
+
+# 目录结构
+├── index_coordinator
+│   ├── bin
+│   │   └── index_coordinator
+│   ├── conf
+│   │   └── index_coordinator.ini
+├── redis
+│   ├── bin
+│   │   └── redis-server
+│   ├── conf
+│   │   └── redis.conf
+├── sdk_client
+│   ├── c++
+│   │   ├── BUILD.bazel
+│   │   ├── hilbert_client_demo.cpp
+│   │   ├── include
+│   │   │   └── hilbert_client.h
+│   │   ├── lib
+│   │   │   └── libhilbert_client.so
+│   │   └── WORKSPACE.bazel
+│   └── python
+│       ├── client_demo.py
+│       ├── requirements.txt
+│       └── run.sh
+├── start.sh
+├── stop.sh
+└── vpu_engine
+    ├── bin
+    │   └── reram_engine
+    ├── conf
+    │   └── reram_engine.ini
+
+# 启动服务
+sudo bash start.sh
+
+# 检查启动是否成功
+curl http://localhost:8000/health # 返回ok说明安装成功
+curl http://localhost:7000/health # 返回ok说明安装成功
+```
 
 ## 故障排除
 
