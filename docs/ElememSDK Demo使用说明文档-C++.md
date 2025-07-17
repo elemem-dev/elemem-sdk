@@ -8,7 +8,7 @@
 
 ### 2.1 开发环境要求
 
-- 操作系统：Linux
+- 操作系统：Ubuntu 24.04
 - C++编译器：支持C++17标准的编译器（推荐GCC或Clang）
 - ElememSDK相关依赖库
 - Bazel构建工具
