@@ -1,118 +1,94 @@
+# ElememSDK Demo使用说明书-Python
+
+## 1. 概述
+本使用说明书详细介绍了如何使用Python语言编写的ElememSDK示例程序。该程序示范如何连接ElememSDK服务端，并执行索引的创建、训练、添加数据、查询数据、更新数据以及删除操作。
+
+## 2. 环境准备
+
+### 2.1 开发环境要求
+- Python 3.7及以上版本
+- ElememSDK Python客户端
+- Docker（推荐使用Docker运行）
+
+### 2.2 目录结构
+
+拉取最新的elemem-sdk代码
 ```
-import logging
-import numpy as np
-import h5py
-import argparse
-#from elemem_sdk import HilbertClient, get_data_from_hdf5
-from elemem_sdk import hilbert_client
-import sys
-
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-
-logger = logging.getLogger('HilbertDemo')
-logger.setLevel(logging.DEBUG)
-
-def run_demo(server, hdf5_path, index_name="sift"):
-    client = hilbert_client.HilbertClient(server, debug=True)
-    try:
-        # 1. 清理旧索引
-        try:
-            logger.info(f"尝试删除旧索引: {index_name}")
-            client.delete_index(index_name)
-        except Exception as e:
-            logger.warning(f"删除索引失败: {str(e)} (可能索引不存在)")
-
-        # 2. 创建新索引
-        logger.info("\n" + "="*50 + "\nStarting CREATE INDEX\n" + "="*50)
-        client.create_index(index_name, 128, 1, 1, 1)
-
-        # 3. 查询所有索引
-        logger.info("\n" + "="*50 + "\nStarting QUERY ALL INDEXES\n" + "="*50)
-        indices = client.query_all_index()
-
-        # 4. 准备数据
-        data, nb, dim = hilbert_client.get_data_from_hdf5(hdf5_path)
-
-        # 5. 训练索引
-        logger.info("\n" + "="*50 + "\nStarting TRAIN\n" + "="*50)
-        client.train(
-                name=index_name,
-                data=data,
-                nlist=128
-        )
-
-        # 6. 准备数据
-        data, nb, dim = hilbert_client.get_data_from_hdf5(hdf5_path)
-        # 7. 添加向量
-        logger.info("\n" + "="*50 + "\nStarting ADD\n" + "="*50)
-        ids = client.add(
-                name=index_name,
-                data=data
-        )
-
-        # 8. 查询向量
-        logger.info("\n" + "="*50 + "\nStarting QUERY VECTOR\n" + "="*50)
-        if ids:
-            vector_id = ids[0]
-            query_response = client.query_vector(index_name, vector_id)
-            logger.info(f"查询到向量元数据: ID={vector_id}, 维度={len(query_response.data)}")
-
-        # 9. 搜索测试
-        logger.info("\n" + "="*50 + "\n执行搜索测试\n" + "="*50)
-        nq = 100
-        with h5py.File(hdf5_path, 'r') as f:
-            base = f['train'][:nq]
-        distances, labels = client.search(index_name, base, k=1, nprob=5)
-        top1 = labels[:, 0]
-        truth = np.arange(nq, dtype=top1.dtype)
-        recall1 = np.mean(top1 == truth)
-        logger.info(f"Recall@1 over {nq} queries: {recall1 * 100:.2f}%")
-
-        # 10. 更新向量
-        logger.info("\n" + "="*50 + "\nStarting UPDATE VECTOR\n" + "="*50)
-        if ids:
-            new_data = np.random.rand(dim).astype(np.float32).tolist()
-            client.update_vector(index_name, vector_id, new_data)
-
-        # 11. 搜索随机查询
-        logger.info("\n" + "="*50 + "\nStarting SEARCH\n" + "="*50)
-        nq = 10
-        test_queries = np.random.rand(nq, dim).astype(np.float32)
-        distances, labels = client.search(index_name, test_queries, k=3)
-        logger.info("\nSearch Results:")
-        for i in range(nq):
-            logger.info(f"查询 {i+1}: 距离={distances[i]}, 标签={labels[i]}")
-
-        # 12. 删除向量
-        logger.info("\n" + "="*50 + "\nStarting DELETE VECTOR\n" + "="*50)
-        if ids:
-            client.delete_vector(index_name, vector_id)
-
-        # 13. 删除索引
-        logger.info("\n" + "="*50 + "\nStarting DELETE INDEX\n" + "="*50)
-        client.delete_index(index_name)
-
-        logger.info("\n" + "="*50 + "\nALL OPERATIONS COMPLETED SUCCESSFULLY\n" + "="*50)
-
-    except Exception as e:
-        logger.exception("Operation failed")
-        logger.error("\n" + "="*50, "\nOPERATION FAILED\n" + "="*50)
-        raise
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Hilbert Client Demo')
-    parser.add_argument('--server', default='localhost:7000', help='Server address')
-    parser.add_argument('--hdf5', required=True, default='.data/SIFT_1M.hdf5', help='HDF5 data path')
-    parser.add_argument('--index', default='sift', help='name of index')
-    args = parser.parse_args()
-
-    logger.info(f"启动 Hilbert 客户端演示")
-    logger.info(f"服务器: {args.server}")
-    logger.info(f"HDF5 文件: {args.hdf5}")
-    logger.info(f"索引名称: {args.index}")
-
-    run_demo(args.server, args.hdf5, args.index)
+git clone https://github.com/elemem-dev/elemem-sdk
 ```
+
+进入到example/python目录，文件结构如下：
+
+```
+├── client_demo.py
+├── requirements.txt
+└── run.sh
+```
+
+### 2.3 依赖安装
+使用以下命令安装所需的Python依赖：
+```shell
+pip install -r requirements.txt
+```
+
+## 3. 程序运行
+
+### 3.1 命令行参数说明
+| 参数           | 描述                    | 默认值               |
+|---------------|-------------------------|----------------------|
+| `--server`    | ElememSDK服务器地址     | localhost:7000       |
+| `--hdf5`      | HDF5数据文件路径         | 必填                 |
+| `--index`     | 索引名称                | sift                 |
+
+### 3.2 运行示例
+```shell
+python client_demo.py --server 192.168.1.100:7000 --hdf5 data/SIFT_1M.hdf5 --index sift
+```
+或使用提供的脚本：
+```shell
+./run.sh
+```
+
+## 4. 功能说明
+程序运行时，会执行以下一系列操作：
+
+### 4.1 连接服务器
+启动时自动连接指定ElememSDK服务端，连接成功会记录日志：
+```
+启动 Hilbert 客户端演示
+服务器: <server>
+HDF5 文件: <hdf5路径>
+索引名称: <索引名>
+```
+
+### 4.2 索引操作
+程序执行以下索引操作：
+- 删除旧索引（如果存在）
+- 创建新索引
+- 查询所有索引
+
+### 4.3 数据操作
+执行索引的数据管理操作：
+- 训练索引
+- 添加向量
+- 查询向量
+- 执行搜索测试（计算召回率）
+- 更新向量
+- 随机查询搜索
+- 删除向量
+- 删除索引
+
+每个步骤成功执行后会输出详细日志信息。
+
+## 5. 常见问题与排查
+
+- **连接失败**：确认服务器IP及端口正确。
+- **索引或数据操作失败**：检查日志以确定具体错误原因。
+
+## 6. 技术支持
+如遇到任何问题或需要更多帮助，请联系ElememSDK技术支持团队。
+
+---
+
+本说明书旨在帮助您快速入门ElememSDK的Python示例程序。希望对您的开发工作有所助益！
+
