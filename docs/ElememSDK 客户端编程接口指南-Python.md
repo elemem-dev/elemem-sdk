@@ -129,64 +129,6 @@ vector_ids = client.add(name="my_index", data=vectors, mode_flag=0)
 - `ValueError`: 数据维度错误
 - `RuntimeError`: 添加失败
 
-## 高级操作
-
-### 6. 流式训练
-
-```python
-# 数据生成器函数
-def data_gen(chunk_size):
-    total_bytes = 10000 * 128 * 4  # 10000个128维float32向量
-    remaining = total_bytes
-    while remaining > 0:
-        size = min(remaining, chunk_size)
-        yield np.random.rand(size // 4).astype(np.float32).tobytes()
-        remaining -= size
-
-client.stream_train(
-    name="large_index",
-    nb=10000, 
-    dim=128,
-    data_generator=data_gen,
-    nlist=256
-)
-```
-
-**适用场景:** 大规模数据集训练（避免内存瓶颈）
-
-**参数说明：**
-| 参数 | 类型 | 说明 | 约束 |
-|------|------|------|------|
-| `name` | str | 索引名称 | 必须存在 |
-| `nb` | int | 向量总数 | >0 |
-| `dim` | int | 向量维度 | >0 |
-| `data_generator` | generator | 数据生成器 | 每次返回bytes |
-| `nlist` | int | 聚类中心数 | >0, 默认128 |
-
-**生成器要求：**
-- 每次迭代返回 bytes 类型数据块
-- 数据应为 float32 二进制格式
-
-### 7. 流式添加
-
-```python
-vector_ids = client.stream_add(
-    name="large_index",
-    nb=5000,
-    dim=128,
-    data_generator=data_gen,  # 同stream_train
-    mode_flag=0
-)
-```
-
-**参数说明：**
-同 `stream_train`，增加 `mode_flag` 参数（含义同`add`方法）
-
-**返回:**
-```python
-[2001, 2002, 2003, ...]  # 生成的向量ID列表
-```
-
 ## 查询操作
 
 ### 8. 向量搜索
@@ -329,9 +271,8 @@ logging.basicConfig(
 日志名称：`HilbertClient`
 
 ## 性能建议
-1. 大数据集操作使用流式方法（`stream_train`/`stream_add`）
+1. 确保向量数据为 `np.float32` 类型
 2. 搜索操作合理设置 `batch_size`（通常 100-500）
-3. 确保向量数据为 `np.float32` 类型
-4. 生产环境关闭 `debug` 模式减少日志开销
+3. 生产环境关闭 `debug` 模式减少日志开销
 
 > 注意：实际使用时请根据服务端支持的参数范围调整具体数值
