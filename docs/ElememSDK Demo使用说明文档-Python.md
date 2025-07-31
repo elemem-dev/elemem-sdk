@@ -26,8 +26,11 @@ git clone https://github.com/elemem-dev/elemem-sdk
 ```
 
 ### 2.3 依赖安装
+如果使用run.sh 运行，则不需要运行如下的安装命令，因为run.sh中已包含。
 使用以下命令安装所需的Python依赖：
 ```shell
+python3 -m venv .venv
+source .venv/bin/activate # 建议进入虚拟环境运行
 pip install -r requirements.txt
 ```
 
@@ -41,6 +44,7 @@ pip install -r requirements.txt
 | `--index`     | 索引名称                | sift                 |
 
 ### 3.2 运行示例
+
 ```shell
 python client_demo.py --server 192.168.1.100:7000 --hdf5 data/SIFT_1M.hdf5 --index sift
 ```
