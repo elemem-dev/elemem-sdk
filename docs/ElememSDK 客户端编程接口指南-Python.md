@@ -8,14 +8,14 @@
 
 ```python
 # 创建客户端实例
-client = HilbertClient(server_address="localhost:50051", debug=True)
+client = HilbertClient(server_address="localhost:50051", debug=False)
 ```
 
 ### 参数说明
 | 参数 | 类型 | 说明 | 默认值 |
 |------|------|------|--------|
 | `server_address` | str | 服务器地址和端口 | 必填 |
-| `debug` | bool | 启用详细响应日志 | False |
+| `debug` | bool | 启用详细响应日志, 可打印服务端详细返回 | False |
 
 ## 索引管理
 
@@ -30,8 +30,8 @@ client.create_index(name="my_index", dim=128, replica_num=2, index_type=1, card_
 |------|------|------|------|--------|
 | `name` | str | 索引名称 | 唯一标识 | - |
 | `dim` | int | 向量维度 | >0 | - |
-| `replica_num` | int | 副本数量 | ≥1 | 1 |
-| `index_type` | int | 索引类型 | 预留参数 | 1 |
+| `replica_num` | int | 副本数量 | - | 1 |
+| `index_type` | int | 索引类型，0：BF, 1: IVF | 预留参数 | 1 |
 | `card_num` | int | 卡片数量 | 预留参数 | 1 |
 
 **返回:** `True`（成功时）
