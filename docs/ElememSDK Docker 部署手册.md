@@ -24,7 +24,9 @@ docker compose up -d server # docker-compose.yml 中配置了本地端口8008映
 curl http://localhost:8008/health # 返回ok说明安装成功
 
 # 运行 C++ Demo
-docker compose run --rm client -i 127.0.0.1 -p 8008 # 127.0.0.1 更换为docker宿主机的ip
+sudo docker compose run --rm client     --server 127.0.0.1:7000     --hdf5 /mnt/Algorithm/datapath/QA_/SIFT/SIFT_1M.hdf5
+# 127.0.0.1 可更换为docker宿主机的ip
+# --hdf5 后可配置为本地数据文件的路径
 
 # 查看运行状态
 docker compose ps
