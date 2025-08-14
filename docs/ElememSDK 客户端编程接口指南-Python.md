@@ -149,9 +149,9 @@ distances, labels = client.search(
 |------|------|------|------|--------|
 | `name` | str | 索引名称 | 必须存在 | - |
 | `queries` | np.ndarray | 查询向量 | shape=(N, dim) | - |
-| `k` | int | 返回结果数 | >0 | 10 |
+| `k` | int | 返回结果数 | >0 | 10，整体需要满足 8 * k * batch_size < 4M |
 | `nprob` | int | 搜索探测数 | >0 | 32 |
-| `batch_size` | int | 查询分批大小 | >0 | 300 |
+| `batch_size` | int | 查询分批大小 | >0 | 300, 整体需要满足 8 * k * batch_size < 4M |
 
 **返回:**
 ```python
@@ -276,3 +276,4 @@ logging.basicConfig(
 3. 生产环境关闭 `debug` 模式减少日志开销
 
 > 注意：实际使用时请根据服务端支持的参数范围调整具体数值
+
