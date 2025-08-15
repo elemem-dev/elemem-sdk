@@ -8,7 +8,7 @@
 
 ```python
 # 创建客户端实例
-client = HilbertClient(server_address="localhost:50051", debug=False)
+client = HilbertClient(server_address="127.0.0.1:7000", debug=False)
 ```
 
 ### 参数说明
@@ -95,7 +95,7 @@ client.train(name="my_index", data=train_data, nlist=256)
 | 参数 | 类型 | 说明 | 约束 |
 |------|------|------|------|
 | `name` | str | 索引名称 | 必须存在 |
-| `data` | np.ndarray | 训练数据 | shape=(N, dim), dtype=float32 |
+| `data` | np.ndarray | 训练数据 | shape=(N, dim), dtype=float32; data受nlist限制, 应满足nb > nlist*39 |
 | `nlist` | int | 聚类中心数 | >0, 默认128 |
 
 **返回:** `True`（成功时）
@@ -276,4 +276,5 @@ logging.basicConfig(
 3. 生产环境关闭 `debug` 模式减少日志开销
 
 > 注意：实际使用时请根据服务端支持的参数范围调整具体数值
+
 
