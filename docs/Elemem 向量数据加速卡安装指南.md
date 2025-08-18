@@ -229,7 +229,41 @@ sudo docker compose ps -a
 ```
 
 
-### 方案2：主机直接安装
+### 方案2：主机安装
+
+安装软件运行时依赖
+```bash
+#!/bin/bash
+
+set -ue
+
+apt update
+apt install -y build-essential
+apt install -y libgoogle-perftools-dev
+apt install -y libhdf5-dev
+apt install -y libhiredis-dev
+apt install -y libopenblas-dev
+apt install -y wget
+apt install -y cmake
+apt install -y redis-server redis-tools
+
+WORK_DIR=$(mktemp -d "./elem_XXXXXX")
+FAISS_DIR="$WORK_DIR/faiss"
+mkdir -p "$FAISS_DIR"
+cd "$FAISS_DIR"
+FAISS_PACKAGE="faiss.tar.gz"
+wget https://github.com/facebookresearch/faiss/archive/refs/tags/v1.9.0.tar.gz -O ${FAISS_PACKAGE}
+tar --strip-components=1 -xzf ${FAISS_PACKAGE}
+cmake -B build . -DFAISS_ENABLE_GPU=OFF -DFAISS_ENABLE_PYTHON=OFF -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=ON
+make -C build -j faiss
+make -C build install
+echo 'export LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH:-}' >> /etc/profile
+source /etc/profile
+
+echo "deploy.sh completed successfully."
+```
+
+安装软件
 ``` bash
 # 解压
 tar xvf elemem_sdk_[2.0.1.202507151532_ubuntu24.04].tar
@@ -300,4 +334,7 @@ Port 7000 is now listening (after 1s).
 # 检查启动是否成功
 curl http://localhost:8000/health # 返回ok说明安装成功
 curl http://localhost:7000/health # 返回ok说明安装成功
+
+# 停止服务
+sudo bash stop.sh
 ```
