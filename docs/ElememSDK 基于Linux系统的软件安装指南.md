@@ -8,11 +8,44 @@
 
 - **操作系统**: Linux发行版（Ubuntu 24.04）
 - **权限**: 需要sudo管理员权限
-- **依赖**: 基本的shell环境
 
 ## 安装步骤
+### 步骤1：
 
-### 步骤1：下载安装包
+安装软件运行时依赖
+```bash
+#!/bin/bash
+
+set -ue
+
+apt update
+apt install -y build-essential
+apt install -y libgoogle-perftools-dev
+apt install -y libhdf5-dev
+apt install -y libhiredis-dev
+apt install -y libopenblas-dev
+apt install -y wget
+apt install -y cmake
+apt install -y redis-server redis-tools
+
+WORK_DIR=$(mktemp -d "./elem_XXXXXX")
+FAISS_DIR="$WORK_DIR/faiss"
+mkdir -p "$FAISS_DIR"
+cd "$FAISS_DIR"
+FAISS_PACKAGE="faiss.tar.gz"
+wget https://github.com/facebookresearch/faiss/archive/refs/tags/v1.9.0.tar.gz -O ${FAISS_PACKAGE}
+tar --strip-components=1 -xzf ${FAISS_PACKAGE}
+cmake -B build . -DFAISS_ENABLE_GPU=OFF -DFAISS_ENABLE_PYTHON=OFF -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=ON
+make -C build -j faiss
+make -C build install
+echo 'export LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH:-}' >> /etc/profile
+source /etc/profile
+
+echo "deploy.sh completed successfully."
+```
+
+
+### 步骤2：下载安装包
 
 首先从官方渠道获取ElememSDK的安装包。
 
@@ -23,16 +56,13 @@ wget https://releases.example.com/elemem-sdk/elemem-sdk-latest.tar.gz
 
 **注意**: 请确保从官方授权的下载地址获取安装包，以保证软件的完整性和安全性。
 
-### 步骤2：解压缩安装包
+### 步骤3：解压缩安装包
 
 将下载的压缩包解压到指定目录：
 
 ```bash
 # 解压到当前目录
 tar -xzf elemem-sdk-latest.tar.gz
-
-# 或解压到指定目录
-tar -xzf elemem-sdk-latest.tar.gz -C /opt/
 ```
 
 解压后，您应该看到类似以下的目录结构：
@@ -48,13 +78,13 @@ elemem-sdk/
 └── LICENSE
 ```
 
-### 步骤3：进入安装目录
+### 步骤4：进入安装目录
 
 ```bash
 cd elemem-sdk
 ```
 
-### 步骤4：停止现有服务
+### 步骤5：停止现有服务
 
 在安装新版本之前，需要先停止可能正在运行的旧版本服务：
 
@@ -67,7 +97,7 @@ sudo ./stop.sh
 - 如果是首次安装，此步骤可能显示"服务未运行"的提示，这是正常现象
 - 停止过程可能需要几秒钟时间，请耐心等待
 
-### 步骤5：启动服务
+### 步骤6：启动服务
 
 停止完成后，执行启动脚本：
 
@@ -86,20 +116,22 @@ sudo ./start.sh
 
 ```bash
 # 检查进程是否正在运行
-ps aux | grep elemem
+ps aux | grep index_coordinator
+ps aux | grep reram_engine
 
 # 检查端口占用情况（如果适用）
-netstat -tlnp | grep elemem
+netstat -tlnp | grep index_coordinator
+netstat -tlnp | grep reram_engine
 ```
 
 ### 查看日志
 
 ```bash
-# 查看启动日志
-tail -f /var/log/elemem-sdk/startup.log
-
 # 查看运行时日志
-tail -f /var/log/elemem-sdk/runtime.log
+less index_coordinator/log/index_coordinator.log
+less index_coordinator/log/index_coordinator.log.wf
+less vpu_engine/log/hilbert_1s.log
+less vpu_engine/log/hilbert_1s.log.wf
 ```
 
 ## 常见问题解决
@@ -130,32 +162,9 @@ tail -f /var/log/elemem-sdk/runtime.log
 如果提示缺少依赖库：
 
 ```bash
-# Ubuntu/Debian系统
 sudo apt-get update
 sudo apt-get install 依赖包名
-
-# CentOS/RHEL系统
-sudo yum install 依赖包名
 ```
-
-## 卸载说明
-
-如需卸载ElememSDK：
-
-1. 停止服务：
-   ```bash
-   sudo ./stop.sh
-   ```
-
-2. 删除安装目录：
-   ```bash
-   rm -rf /path/to/elemem-sdk
-   ```
-
-3. 清理日志文件（可选）：
-   ```bash
-   sudo rm -rf /var/log/elemem-sdk
-   ```
 
 ## 注意事项
 
