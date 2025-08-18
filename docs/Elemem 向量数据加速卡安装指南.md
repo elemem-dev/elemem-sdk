@@ -155,7 +155,7 @@ elem-smi管理工具更多使用方法见 4-系统管理文档
 ```bash
 
 # 安装固件
-sudo elem-update elemem-firmware-[2.0.2.8].bin
+sudo elem-update 0 elemem-firmware-[2.0.2.8].bin # 0代表第一张卡，1代表第二张卡
 
 +-------------+---------------+-----------------------------+------------------------------+
 |   Magic Key | PRODUCT MODEL |              Packet Version |                     打包时间 |
