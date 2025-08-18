@@ -16,7 +16,6 @@ services:
             - server
         networks:
             - hilnet
-
 networks:
     hilnet:
         driver: bridge

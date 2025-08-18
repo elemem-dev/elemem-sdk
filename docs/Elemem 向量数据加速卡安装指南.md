@@ -25,6 +25,7 @@
 
 **硬件要求**
 - CPU：AMD EPYC Rome 7H12（2.60G/256M/64C/128T/280W）
+- 操作系统：ubuntu 24.04 kernel 6.1.8
 - 内存：内存 32GB DDR4 ECC RDIMM * 4
 - 主板：支持 PCIe 3.0 x4
 - 电源：至少 650W（推荐 750W 80+ 金牌认证）

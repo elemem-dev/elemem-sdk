@@ -3,3 +3,6 @@ example/c++/bazel-bin
 example/c++/bazel-c++
 example/c++/bazel-out
 example/c++/bazel-testlogs
+.DS_Store
+driver-v2.0.12.tar.gz
+pdf/
