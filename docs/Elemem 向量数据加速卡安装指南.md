@@ -176,7 +176,7 @@ check head success input 'go' to continue
 # 版本确认无误后，输入go，然后回车，开始升级固件，升级完成之后，需要掉电重启机器
 
 # 重启系统
-sudo reboot
+sudo poweroff
 
 # 查看固件版本
 elem-smi -L
@@ -274,66 +274,15 @@ echo "deploy.sh completed successfully."
 # 解压
 tar xvf elemem_sdk_[2.0.1.202507151532_ubuntu24.04].tar
 
-# 目录结构
-├── docker
-│   ├── docker-compose.yml
-│   ├── Dockerfile.client
-│   ├── Dockerfile.server
-│   └── supervisord.conf
-├── index_coordinator
-│   ├── bin
-│   │   └── index_coordinator
-│   ├── conf
-│   │   └── index_coordinator.ini
-│   └── log
-│       ├── index_coordinator.log
-│       └── index_coordinator.log.wf
-├── lib
-│   ├── libelemcli.so
-│   └── libosal.so
-├── redis
-│   ├── bin
-│   │   └── redis-server
-│   ├── conf
-│   │   └── redis.conf
-├── sdk_client
-│   ├── c++
-│   │   ├── BUILD.bazel
-│   │   ├── config.ini
-│   │   ├── hilbert_client_demo.cpp
-│   │   ├── include
-│   │   │   └── hilbert_client.h
-│   │   ├── lib
-│   │   │   └── libhilbert_client.so
-│   │   ├── MODULE.bazel
-│   │   ├── README.md
-│   │   ├── test_qps_recall.cpp
-│   │   └── WORKSPACE.bazel
-│   ├── entrypoint.sh
-│   └── python
-│       ├── client_demo.py
-│       ├── requirements.txt
-│       └── run.sh
-├── start.sh
-├── stop.sh
-└── vpu_engine
-    ├── bin
-    │   └── reram_engine
-    ├── conf
-    │   └── reram_engine.ini
-    ├── log
-    │   ├── hilbert_1s.log
-    │   └── hilbert_1s.log.wf
-
 # 启动服务
 sudo bash start.sh
 
 # 执行启动后输出内容如下
-Waiting up to 30s for port 6378 to be listened...
+Waiting up to 1200s for port 6378 to be listened...
 Port 6378 is now listening (after 1s).
-Waiting up to 30s for port 8000 to be listened...
+Waiting up to 1200s for port 8000 to be listened...
 Port 8000 is now listening (after 2s).
-Waiting up to 30s for port 7000 to be listened...
+Waiting up to 1200s for port 7000 to be listened...
 Port 7000 is now listening (after 1s).
 所有服务已后台启动，日志请查看各自目录下的 *.log 文件。
 

@@ -43,7 +43,7 @@ struct Index {
 | `name`         | `std::string`   | 索引名称，字母/数字/下划线组成，长度 `[1,50]`                 |
 | `nlist`        | `uint32_t`      | 子索引数（IVF 簇数），范围 `[1,262144]`，且 `nlist*39 >= nb` |
 | `dim`          | `uint32_t`      | 向量维度，范围 `[1,8192]`                                    |
-| `nb`           | `uint32_t`      | 向量数量，上限 = `card_num * 50,000,000`                     |
+| `nb`           | `uint32_t`      | 向量数量，nb最大值<6*1024^3/2/dim*0.95*card_num                |
 | `index_type`   | `IndexType`     | 索引类型                                                     |
 | `replica_num`  | `uint32_t`      | 副本数，范围 `[0,2]`                                         |
 

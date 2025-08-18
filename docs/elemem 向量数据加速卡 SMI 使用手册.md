@@ -25,7 +25,7 @@ elem-smi [OPTIONS]
 |------|--------|------|
 | `-L` | `--list-elem` | 列出所有扫描到的卡的完整信息 |
 | `-q` | `--query` | 表示这是一个查询动作 |
-| `-c <category>` | `--category <c>` | 指定展示类别：`overview`、`card`、`ddr`、`driver` |
+| `-c <category>` | `--category <c>` | 指定展示类别：`overview`、`card`、`driver` |
 | `-d <display>` | `--display <d>` | 单项查询，具体参数参考 `-L` 输出 |
 | `-r <range>` | `--range <r>` | 查看调试信息，格式：`((card_start,card_end),(group_start,group_end),(chip_start,chip_end))` |
 | `-u` | `--hdna` | 查看卡ID与HDNA和DNA的对应关系 |
@@ -80,11 +80,6 @@ elem-smi -q -c overview
 #### 查看指定卡的卡信息
 ```bash
 elem-smi -q -c card -i 0
-```
-
-#### 查看内存信息
-```bash
-elem-smi -q -c ddr -i 0
 ```
 
 #### 查看驱动信息
@@ -151,21 +146,6 @@ elem-smi -q -d temp -i 0
 elem-smi -q -d pci_speed -i 0
 ```
 
-#### 内存相关查询
-```bash
-# 总内存
-elem-smi -q -d memory.total -i 0
-
-# 已用内存
-elem-smi -q -d memory.used -i 0
-
-# H2C缓冲区使用率
-elem-smi -q -d memory.h2c_buffer -i 0
-
-# C2H缓冲区使用率
-elem-smi -q -d memory.c2h_buffer -i 0
-```
-
 #### 驱动性能查询
 ```bash
 # H2C方向
@@ -193,11 +173,6 @@ elem-smi -q -d timestamp -i 0
 #### 组缓冲区状态
 ```bash
 elem-smi -q -d memory.group_buffer -i 0
-```
-
-#### 内存使用效率
-```bash
-elem-smi -q -d memory.uage -i 0
 ```
 
 #### 查看DNA映射关系
@@ -241,8 +216,7 @@ elem-smi -L -l 1 -f /tmp/monitor.log
 
 1. **overview** - 概览信息：卡索引、组数、芯片数、版本等
 2. **card** - 卡信息：名称、DNA、功耗、温度等  
-3. **ddr** - 内存信息：总量、使用量、缓冲区状态
-4. **driver** - 驱动信息：版本、PCI速度、传输统计
+3. **driver** - 驱动信息：版本、PCI速度、传输统计
 
 ## 故障排除
 
@@ -254,13 +228,6 @@ elem-smi -L -l 1 -f /tmp/monitor.log
 2. **找不到设备**
    - 检查驱动是否正确安装
    - 确认设备连接正常
-
-### 硬件限制说明
-
-- **功耗监控**：当前硬件可能不支持功耗监控功能
-- **周期计数**：数字版本不支持cycle查询
-- **RRAM利用率**：数字版本不支持utilization.rram查询
-- **外接电源**：power.use在没有外接电源时可能显示错误值
 
 ## 版本信息
 
