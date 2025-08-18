@@ -8,20 +8,14 @@
 
 参考向量数据加速卡安装指南中的软件部署，docker部署方案，启动docker客户端。
 ```bash
+cd docker
 sudo docker compose run --rm client
 
-# 进入容器
-sudo docker exec -it client /bin/bash
-
 # 进入性能测试目录
-cd /root/hilbert/example
-
-# 目录结构
-tree
+cd /root/hilbert/c++
 
 # 执行qps recall测试
-
-./test_qps_recall config.ini
+./bazel-bin/test_qps_recall config.ini
 
 ```
 
