@@ -211,6 +211,9 @@ sudo docker compose up -d server # -d是为了让容器在后台运行，不使�
 
 # 运行 C++ Demo
 sudo docker compose run --rm client # --rm 代表退出后就删除本次创建的容器，请根据自己需要修改运行参数
+or
+sudo docker compose up -d client
+sudo docker exec -it elemem_client /bin/bash
 
 # 127.0.0.1 可更换为docker宿主机的ip
 # --hdf5 后可配置为本地数据文件的路径
