@@ -196,14 +196,11 @@ elem-smi -L
 
 ### 方案1：docker安装
 ```bash
-# 下载 SDK 工程代码
-git clone https://github.com/elemem-dev/elemem-sdk.git
 
 # 进入工程目录
-cd elemem-sdk
+cd docker
 
-# 工程目录结构如下
-- demo
+# 目录中包含如下文件
 - docker-compose.yml
 
 # 启动加速卡引擎
@@ -220,7 +217,11 @@ sudo docker compose run --rm client # --rm 代表退出后就删除本次创建�
 # compose文件中可以看到挂载了/mnt/到容器内的/mnt/
 # entrypoint.sh 详细写了如何运行各个demo，可以按需修改
 cd /root/hilbert
-bash entrypoint.sh --server 127.0.0.1:7000  --hdf5 /mnt/Algorithm/datapath/QA_/SIFT/SIFT_1M.hdf5
+bash entrypoint.sh --server 127.0.0.1:7000  --hdf5 ./c++/SIFT_1M.hdf5
+
+# 运行bench_test
+cd c++
+./bazel_bin/test_qps_recall config.ini
 
 # 查看运行状态
 sudo docker compose ps -a
