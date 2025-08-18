@@ -41,17 +41,9 @@ git clone https://github.com/elemem-dev/elemem-sdk
 bazel build //:hilbert_client_demo
 ```
 
-## 3. Docker镜像运行
+## 3. 程序运行
 
-程序已封装在Docker镜像`elemem-sdk-demo-c++`中，执行以下命令运行：
-
-```shell
-docker run --rm -it elemem-sdk-demo-c++ --ip <IP> --port <PORT>
-```
-
-## 4. 程序运行
-
-### 4.1 命令行参数说明
+### 3.1 命令行参数说明
 
 程序支持以下命令行参数：
 
@@ -61,17 +53,17 @@ docker run --rm -it elemem-sdk-demo-c++ --ip <IP> --port <PORT>
 | `-i`, `--ip`   | ElememSDK服务器IP地址 | 127.0.0.1 |
 | `-p`, `--port` | ElememSDK服务器端口号  | 7000      |
 
-### 4.2 运行示例
+### 3.2 运行示例
 
 ```shell
 ./bazel-bin/hilbert_client_demo --ip 192.168.1.100 --port 7000
 ```
 
-## 5. 功能说明
+## 4. 功能说明
 
 程序连接到ElememSDK服务器后，会执行以下操作：
 
-### 5.1 连接服务器
+### 4.1 连接服务器
 
 程序启动时自动连接ElememSDK服务端，连接成功则输出：
 
@@ -79,7 +71,7 @@ docker run --rm -it elemem-sdk-demo-c++ --ip <IP> --port <PORT>
 Connected to server at <IP>:<Port>
 ```
 
-### 5.2 索引操作
+### 4.2 索引操作
 
 程序会依次对两种索引类型（IVF和BF）执行以下操作：
 
@@ -87,7 +79,7 @@ Connected to server at <IP>:<Port>
 - 查询所有索引（`query_all_index`）
 - 删除索引（`delete_index`）
 
-### 5.3 数据操作
+### 4.3 数据操作
 
 程序对创建的索引执行数据相关操作，包括：
 
@@ -100,13 +92,13 @@ Connected to server at <IP>:<Port>
 
 每个操作执行成功后会输出相应的成功提示信息。
 
-## 6. 常见问题与排查
+## 5. 常见问题与排查
 
 - **连接失败**：请检查服务端地址和端口是否正确。
 - **索引创建失败**：检查索引名是否已存在，或服务端状态是否正常。
 - **数据操作失败**：请确认数据维度（dim）和数量是否符合服务端限制。
 
-## 7. 技术支持
+## 6. 技术支持
 
 如遇到任何问题或需要进一步帮助，请联系ElememSDK技术支持团队。
 
