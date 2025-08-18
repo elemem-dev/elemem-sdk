@@ -229,7 +229,7 @@ sudo docker compose ps -a
 ```
 
 
-### 方案2：直接安装
+### 方案2：主机直接安装
 ``` bash
 # 解压
 tar xvf elemem_sdk_[2.0.1.202507151532_ubuntu24.04].tar
