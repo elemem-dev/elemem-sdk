@@ -28,9 +28,9 @@ client.create_index(name="my_index", dim=128, replica_num=2, index_type=1, card_
 **参数说明：**
 | 参数 | 类型 | 说明 | 约束 | 默认值 |
 |------|------|------|------|--------|
-| `name` | str | 索引名称 | 唯一标识 | - |
-| `dim` | int | 向量维度 | >0 | - |
-| `replica_num` | int | 副本数量 | - | 1 |
+| `name` | str | 索引名称 | 唯一标识，1<=长度<=50 | - |
+| `dim` | int | 向量维度 | 0<dim<=8192 | - |
+| `replica_num` | int | 副本数量 | 0<=replica_num<=2 | 1 |
 | `index_type` | int | 索引类型，0：BF, 1: IVF | 预留参数 | 1 |
 | `card_num` | int | 卡片数量 | 预留参数 | 1 |
 
@@ -150,7 +150,7 @@ distances, labels = client.search(
 | `name` | str | 索引名称 | 必须存在 | - |
 | `queries` | np.ndarray | 查询向量 | shape=(N, dim) | - |
 | `k` | int | 返回结果数 | >0 | 10，整体需要满足 8 * k * batch_size < 4M |
-| `nprob` | int | 搜索探测数 | >0 | 32 |
+| `nprob` | int | 搜索探测数 | 0<nprob<=分簇数量 | 32 |
 | `batch_size` | int | 查询分批大小 | >0 | 300, 整体需要满足 8 * k * batch_size < 4M |
 
 **返回:**
@@ -276,5 +276,6 @@ logging.basicConfig(
 3. 生产环境关闭 `debug` 模式减少日志开销
 
 > 注意：实际使用时请根据服务端支持的参数范围调整具体数值
+
 
 
