@@ -253,7 +253,7 @@ FAISS_DIR="$WORK_DIR/faiss"
 mkdir -p "$FAISS_DIR"
 cd "$FAISS_DIR"
 FAISS_PACKAGE="faiss.tar.gz"
-wget https://github.com/facebookresearch/faiss/archive/refs/tags/v1.9.0.tar.gz -O ${FAISS_PACKAGE}
+wget https://github.com/facebookresearch/faiss/archive/refs/tags/v1.11.0.tar.gz -O ${FAISS_PACKAGE}
 tar --strip-components=1 -xzf ${FAISS_PACKAGE}
 cmake -B build . -DFAISS_ENABLE_GPU=OFF -DFAISS_ENABLE_PYTHON=OFF -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=ON
 make -C build -j faiss
