@@ -32,7 +32,7 @@ release
 ├── elemem_sdk_2.0.1.202507151532_ubuntu24.04.tar // 软件
 ```
 
-解压进入elemem_sdk_*.tar, 进入example/c++目录，文件结构如下：
+解压elemem_sdk_*.tar, 进入example/c++目录，文件结构如下：
 
 ```
 ├── BUILD.bazel
