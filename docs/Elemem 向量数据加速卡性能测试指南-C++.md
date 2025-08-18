@@ -6,16 +6,23 @@
 
 ## 环境准备
 
-### 安装 bazel 6.3.0
-
-1. 下载安装脚本  [点击下载](https://github.com/bazelbuild/bazel/releases/download/6.3.0/bazel-6.3.0-installer-linux-x86_64.sh)
-2. 执行安装 `bash bazel-6.3.0-installer-linux-x86_64.sh`
-3. 将执行文件链接到 /usr/bin 下面  `sudo ln /usr/local/bin/bazel /usr/bin/bazel`
-3. 检查安装是否成功 `bazel --version`
-
-### 编译
+参考向量数据加速卡安装指南中的软件部署，docker部署方案，启动docker客户端。
 ```bash
-bazel build :test_qps_recall
+sudo docker compose run --rm client
+
+# 进入容器
+sudo docker exec -it client /bin/bash
+
+# 进入性能测试目录
+cd /root/hilbert/example
+
+# 目录结构
+tree
+
+# 执行qps recall测试
+
+./test_qps_recall config.ini
+
 ```
 
 ## 配置文件说明
