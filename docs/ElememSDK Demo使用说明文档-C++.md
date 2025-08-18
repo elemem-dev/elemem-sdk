@@ -14,14 +14,25 @@
 - Bazel构建工具
 - Docker环境
 
-### 2.2 程序目录结构
+### 2.2 获取Demo程序
 
-拉取最新的elemem-sdk代码
-```
-git clone https://github.com/elemem-dev/elemem-sdk
+获取安装程序（FAE提供）
+```bash
+
+# FAE提供的安装包，名称规格如下
+elemem-vector-engine.[2.0.8].tar.gz
+
+# 解压
+tar xvf elemem-vector-engine.[2.0.8].tar.gz
+
+# 目录结构
+release
+├── elemem-driver-2.0.7.202507161739.run          // 驱动
+├── elemem-firmware-2.0.2.8.bin                   // 固件
+├── elemem_sdk_2.0.1.202507151532_ubuntu24.04.tar // 软件
 ```
 
-进入到example/c++目录，文件结构如下：
+解压进入elemem_sdk_*.tar, 进入example/c++目录，文件结构如下：
 
 ```
 ├── BUILD.bazel
