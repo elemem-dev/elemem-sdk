@@ -221,7 +221,7 @@ bash entrypoint.sh --server 127.0.0.1:7000  --hdf5 ./c++/SIFT_1M.hdf5
 
 # 运行bench_test
 cd c++
-./bazel_bin/test_qps_recall config.ini
+./bazel-bin/test_qps_recall config.ini
 
 # 查看运行状态
 sudo docker compose ps -a
