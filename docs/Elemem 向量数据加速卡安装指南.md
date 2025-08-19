@@ -215,10 +215,10 @@ or
 sudo docker compose up -d client
 sudo docker exec -it elemem_client /bin/bash
 
-# 127.0.0.1 可更换为docker宿主机的ip
-# --hdf5 后可配置为本地数据文件的路径
+# --server 127.0.0.1 可更换为docker宿主机的ip
+# --hdf5 可配置为数据文件的路径
 # compose文件中可以看到挂载了/mnt/到容器内的/mnt/
-# entrypoint.sh 详细写了如何运行各个demo，可以按需修改
+# entrypoint.sh 分别执行了C++ 和 python的 Demo，可以按需修改，或者分别进入各自目录下执行
 cd /root/hilbert
 bash entrypoint.sh --server 127.0.0.1:7000  --hdf5 /root/hilbert/c++/SIFT_1M.hdf5
 
