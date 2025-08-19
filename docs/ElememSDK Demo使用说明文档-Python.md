@@ -36,6 +36,8 @@ sudo docker compose run --rm client # --rm 代表退出后就删除本次创建�
 或者
 sudo docker compose up -d client
 sudo docker exec -it elemem_client /bin/bash
+```
+
 
 ## 3. 程序运行
 
