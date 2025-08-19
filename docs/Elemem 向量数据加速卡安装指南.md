@@ -235,7 +235,7 @@ sudo docker compose ps -a
 
 ### 方案2：主机安装
 
-安装软件运行时依赖
+安装软件运行时依赖，需要root权限
 ```bash
 #!/bin/bash
 
