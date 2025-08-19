@@ -51,12 +51,7 @@ sudo docker exec -it elemem_client /bin/bash
 ### 3.2 运行示例
 
 ```shell
-# --hdf5 后可配置为本地数据文件的路径
-python client_demo.py --server 192.168.1.100:7000 --hdf5 data/SIFT_1M.hdf5 --index sift
-```
-或使用提供的脚本：
-```shell
-# --hdf5 后可配置为本地数据文件的路径
+cd /root/hilbert/python
 bash run.sh --server 127.0.0.1:7000  --hdf5 /root/hilbert/c++/SIFT_1M.hdf5 --index sift
 ```
 
