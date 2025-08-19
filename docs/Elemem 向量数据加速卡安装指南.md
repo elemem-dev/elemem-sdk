@@ -220,7 +220,7 @@ sudo docker exec -it elemem_client /bin/bash
 # compose文件中可以看到挂载了/mnt/到容器内的/mnt/
 # entrypoint.sh 详细写了如何运行各个demo，可以按需修改
 cd /root/hilbert
-bash entrypoint.sh --server 127.0.0.1:7000  --hdf5 ./c++/SIFT_1M.hdf5
+bash entrypoint.sh --server 127.0.0.1:7000  --hdf5 /root/hilbert/c++/SIFT_1M.hdf5
 
 # 运行bench_test
 cd c++
