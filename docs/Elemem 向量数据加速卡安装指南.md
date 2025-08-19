@@ -261,8 +261,10 @@ tar --strip-components=1 -xzf ${FAISS_PACKAGE}
 cmake -B build . -DFAISS_ENABLE_GPU=OFF -DFAISS_ENABLE_PYTHON=OFF -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=ON
 make -C build -j faiss
 make -C build install
-echo 'export LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH:-}' >> /etc/profile
+echo "export LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH:-}" >> /etc/profile
+set +ue
 source /etc/profile
+set -ue
 
 echo "deploy.sh completed successfully."
 ```
