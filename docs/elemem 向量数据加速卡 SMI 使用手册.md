@@ -27,13 +27,7 @@ elem-smi [OPTIONS]
 | `-q` | `--query` | 表示这是一个查询动作 |
 | `-c <category>` | `--category <c>` | 指定展示类别：`overview`、`card`、`driver` |
 | `-d <display>` | `--display <d>` | 单项查询，具体参数参考 `-L` 输出 |
-| `-r <range>` | `--range <r>` | 查看调试信息，格式：`((card_start,card_end),(group_start,group_end),(chip_start,chip_end))` |
 | `-u` | `--hdna` | 查看卡ID与HDNA和DNA的对应关系 |
-
-**范围说明：**
-- card范围：[0, 7]
-- group范围：[0, 25] 
-- chip范围：[0, 2]
 
 ### 操作控制参数
 
@@ -95,15 +89,6 @@ elem-smi -q -c driver
 ```bash
 # 查看卡索引
 elem-smi -q -d card_index -i 0
-
-# 查看组数量
-elem-smi -q -d group_num -i 0
-
-# 查看芯片数量  
-elem-smi -q -d chip_num -i 0
-
-# 查看存储体大小
-elem-smi -q -d bank_size -i 0
 
 # 查看卡状态
 elem-smi -q -d alive -i 0
@@ -168,11 +153,6 @@ elem-smi -q -d driver.c2h.packing.rate -i 0 # 打包率
 #### 时间戳
 ```bash
 elem-smi -q -d timestamp -i 0
-```
-
-#### 组缓冲区状态
-```bash
-elem-smi -q -d memory.group_buffer -i 0
 ```
 
 #### 查看DNA映射关系

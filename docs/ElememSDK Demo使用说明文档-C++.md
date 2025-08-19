@@ -30,23 +30,14 @@ release
 ├── elemem-driver-2.0.7.202507161739.run          // 驱动
 ├── elemem-firmware-2.0.2.8.bin                   // 固件
 ├── elemem_sdk_2.0.1.202507151532_ubuntu24.04.tar // 软件
+
+# 解压elemem_sdk_*.tar, 进入example/c++目录
 ```
 
-解压elemem_sdk_*.tar, 进入example/c++目录，文件结构如下：
-
-```
-├── BUILD.bazel
-├── hilbert_client_demo.cpp
-├── include
-│   └── hilbert_client.h
-├── lib
-│   └── libhilbert_client.so
-└── WORKSPACE.bazel
-```
 
 ### 2.3 构建程序
 
-使用Bazel进行程序编译：
+构建环境请参考，使用Bazel进行程序编译：
 
 ```shell
 bazel build //:hilbert_client_demo

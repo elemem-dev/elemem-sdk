@@ -95,7 +95,7 @@ client.train(name="my_index", data=train_data, nlist=256)
 | 参数 | 类型 | 说明 | 约束 |
 |------|------|------|------|
 | `name` | str | 索引名称 | 必须存在 |
-| `data` | np.ndarray | 训练数据 | shape=(N, dim), dtype=float32; data受nlist限制, 应满足nb > nlist*39 |
+| `data` | np.ndarray | 训练数据 | shape=(N, dim), dtype=float32; data受nlist限制, 应满足nb >= nlist*39 |
 | `nlist` | int | 聚类中心数 | >0, 默认128 |
 
 **返回:** `True`（成功时）
@@ -117,7 +117,6 @@ vector_ids = client.add(name="my_index", data=vectors, mode_flag=0)
 |------|------|------|------|--------|
 | `name` | str | 索引名称 | 必须存在 | - |
 | `data` | np.ndarray | 向量数据 | shape=(N, dim), dtype=float32 | - |
-| `mode_flag` | int | 添加模式 | 0=追加, 1=覆盖 | 0 |
 
 **返回:**
 ```python
@@ -166,8 +165,7 @@ distances, labels = client.search(
 ```python
 response = client.query_vector(
     name="my_index",
-    vector_id=123,
-    out_flag=0
+    vector_id=123
 )
 ```
 
@@ -176,7 +174,6 @@ response = client.query_vector(
 |------|------|------|------|--------|
 | `name` | str | 索引名称 | 必须存在 | - |
 | `vector_id` | int | 向量ID | 必须存在 | - |
-| `out_flag` | int | 输出格式标志 | 0=原始数据, 1=处理后数据 | 0 |
 
 **响应对象字段：**
 ```python
@@ -221,34 +218,6 @@ client.delete_vector(name="my_index", vector_id=123)
 
 **返回:** `True`（成功时）
 
-## 辅助功能
-
-### HDF5 数据处理
-
-```python
-from hilbert_sdk import get_data_from_hdf5
-
-data, num, dim = get_data_from_hdf5(
-    hdf5_path="data.h5",
-    dataset_name="train"
-)
-```
-
-**参数说明：**
-| 参数 | 类型 | 说明 | 约束 | 默认值 |
-|------|------|------|------|--------|
-| `hdf5_path` | str | 文件路径 | 必须存在 | - |
-| `dataset_name` | str | 数据集名称 | 必须存在 | 'train' |
-
-**返回:**
-```python
-(
-    np.ndarray,  # 数据数组 shape=(num, dim)
-    int,         # 向量数量
-    int          # 向量维度
-)
-```
-
 ## 错误处理
 
 所有方法可能抛出以下异常：
@@ -256,19 +225,6 @@ data, num, dim = get_data_from_hdf5(
 - `TypeError`: 参数类型错误
 - `ValueError`: 参数值错误
 - `FileNotFoundError`: HDF5 文件不存在（仅限`get_data_from_hdf5`）
-
-## 日志配置
-
-SDK 使用标准 logging 模块，可通过以下方式配置：
-```python
-import logging
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-```
-
-日志名称：`HilbertClient`
 
 ## 性能建议
 1. 确保向量数据为 `np.float32` 类型
