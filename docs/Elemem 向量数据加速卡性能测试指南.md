@@ -100,6 +100,74 @@ for batch in 50 100 200 500 1000; do
 done
 ```
 
+### NUMA架构下CPU和内存绑定
+NUMA架构下存在跨节点访问内存带来的性能问题，可参考如下脚本检测和使用，主要是启动index_coordinator模块
+```bash
+#!/bin/bash
+# numa_optimizer.sh - 自动检测系统NUMA配置并推荐优化策略
+
+echo "=== 系统NUMA配置检测 ==="
+
+# 检测CPU信息
+CPU_COUNT=$(nproc)
+echo "逻辑CPU核心数: $CPU_COUNT"
+
+# 检测NUMA节点信息
+if command -v numactl &> /dev/null; then
+    echo "--- NUMA配置信息 ---"
+    numactl --hardware
+    
+    # 提取有内存的节点
+    AVAILABLE_NODES=$(numactl --hardware | grep "size" | grep -v "0 MB" | awk '{print $2}' | tr '\n' ' ')
+    echo "可用NUMA节点(有内存): $AVAILABLE_NODES"
+    
+    # 提取每个节点的CPU范围
+    echo "各节点CPU分配:"
+    numactl --hardware | grep "node.*cpus" | while read -r line; do
+        NODE=$(echo $line | awk '{print $2}')
+        CPUS=$(echo $line | awk '{print $4}' | tr '\n' ' ' | sed 's/ $//')
+        SIZE=$(numactl --hardware | grep "node $NODE size" | awk '{print $4}')
+        if [ "$SIZE" != "0" ]; then
+            echo "  节点 $NODE: CPUs $CPUS, 内存: ${SIZE}MB"
+        fi
+    done
+    
+    # 分析节点距离
+    echo "--- 节点距离分析 ---"
+    numactl --hardware | sed -n '/node distances:/,$p'
+    
+else
+    echo "警告: numactl 未安装，无法获取NUMA信息"
+    echo "建议安装: sudo apt install numactl"
+fi
+
+# 生成优化建议
+echo ""
+echo "=== 优化建议 ==="
+if command -v numactl &> /dev/null && [ ! -z "$AVAILABLE_NODES" ]; then
+    if [ $(echo $AVAILABLE_NODES | wc -w) -eq 1 ]; then
+        echo "单节点系统: 使用节点 ${AVAILABLE_NODES}"
+        echo "推荐命令: numactl --cpunodebind=${AVAILABLE_NODES} --membind=${AVAILABLE_NODES} ./bin/index_coordinator"
+    else
+        # 分析节点分组
+        echo "多节点系统: 可用节点 ${AVAILABLE_NODES}"
+        echo "推荐测试以下配置:"
+        echo "1. 单节点测试(逐个测试每个节点)"
+        for node in $AVAILABLE_NODES; do
+            echo "   numactl --cpunodebind=$node --membind=$node ./bin/index_coordinator"
+        done
+        
+        echo "2. 同组多节点测试(如节点距离较近)"
+        echo "3. 全节点测试: numactl --cpunodebind=${AVAILABLE_NODES// /,} --membind=${AVAILABLE_NODES// /,} ./bin/index_coordinator"
+    fi
+else
+    echo "非NUMA系统或numactl不可用"
+    echo "可以考虑使用taskset进行CPU绑定:"
+    echo "  taskset -c 0-$((CPU_COUNT/2)) ./bin/index_coordinator # 使用一半CPU核心"
+    echo "  taskset -c 0-$((CPU_COUNT-1)) ./bin/index_coordinator # 使用所有CPU核心"
+fi
+```
+
 ### nprob参数扫描
 ```ini
 # 在配置文件中设置多个nprob值进行对比
