@@ -90,6 +90,17 @@ HDF5 文件: <hdf5路径>
 
 - **连接失败**：确认服务器IP及端口正确。
 - **索引或数据操作失败**：检查日志以确定具体错误原因。
+- **SDK安装 or 更新**：
+```python
+# 查询SDK版本列表
+pip3 index versions elemem_vector_sdk
+# 安装最新版本SDK
+pip3 install elemem_vector_sdk
+# 安装指定版本
+pip3 install elemem_vector_sdk==<version>
+# example:
+pip3 install elemem_vector_sdk==2.1.0.1
+```
 
 ## 6. 技术支持
 如遇到任何问题或需要更多帮助，请联系ElememSDK技术支持团队。
