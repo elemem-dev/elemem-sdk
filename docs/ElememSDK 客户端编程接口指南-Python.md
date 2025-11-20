@@ -220,26 +220,26 @@ client.delete_vector(name="my_index", vector_id=123)
 
 ### 12. 导出索引
 ```python
-def save_index(self, filepath: str, index_name: str) -> bool:
+def save_index(self, file_path: str, index_name: str) -> bool:
 ```
 
 **参数说明：**
 | 参数 | 类型 | 说明 | 约束 |
 |------|------|------|------|
-| `filepath` | str | 导出路径 | 必须存在 |
+| `file_path` | str | 导出路径 | 必须存在 |
 | `index_name` | str | 索引名称 | 必须存在 |
 
-**返回:** `True`（成功时）
+**返回:** `文件名称`（成功时不为空，失败为空串）
 
 ### 13. 导入索引
 ```python
-def load(filepath: str, index_name: str, is_overwrite: bool, card_num: int = 1) -> bool:
+def load_index(file_path: str, index_name: str, is_overwrite: bool, card_num: int = 1) -> bool:
 ```
 
 **参数说明：**
 | 参数 | 类型 | 说明 | 约束 |
 |------|------|------|------|
-| `filepath` | str | 文件路径 | 必须存在 |
+| `file_path` | str | 文件路径 | 必须存在 |
 | `index_name` | str | 索引名称 | 必须存在 |
 | `is_overwrite` | bool | 如果有同名索引，是否覆盖 | 必须存在 |
 | `card_num` | int | 使用卡的数量 | 默认为1 |
@@ -305,6 +305,7 @@ def search_callback(
 3. 生产环境关闭 `debug` 模式减少日志开销
 
 > 注意：实际使用时请根据服务端支持的参数范围调整具体数值
+
 
 
 
