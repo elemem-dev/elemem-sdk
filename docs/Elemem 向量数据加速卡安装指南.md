@@ -293,3 +293,30 @@ curl http://localhost:7000/health # 返回ok说明安装成功
 # 停止服务
 sudo bash stop.sh
 ```
+
+## 升级方法
+### 换卡
+
+下面以index名称为index_sift1m_d128为例，描述换卡的操作方法：
+1. 使用软件接口save，将index_sift1m_d128保存为index_sift1m_d128.index
+2. 换卡。换卡后重新开机启动软件。
+3. 使用删除接口删除index_sift1m_d128，调用load接口，加载文件index_sift1m_d128.index，将指定index还原到新卡上
+
+### 升级软件
+
+软件升级主要替换二进制文件和配置文件。解压压缩包后，使用新文件替换下面这几个文件
+```
+├── index_coordinator
+│   ├── bin
+│   │   └── index_coordinator
+│   ├── conf
+│   │   └── index_coordinator.ini
+└── vpu_engine
+    ├── bin
+    │   └── reram_engine
+    ├── conf
+    │   └── reram_engine.ini
+```
+替换完成后，重启服务即可完成升级
+
+
