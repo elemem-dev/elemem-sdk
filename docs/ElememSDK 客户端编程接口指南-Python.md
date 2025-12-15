@@ -39,6 +39,25 @@ client.create_index(name="my_index", dim=128, replica_num=2, index_type=1, card_
 **异常:**
 - `RuntimeError`: 创建失败时抛出，包含错误详情
 
+```python
+client.create_index(name: str, dim: int, index_type: int, cardids: List[int])
+# example: client.create_index_on_cardids("index_test", 128, 1, [1675729256,806732947])
+```
+
+**参数说明：**
+| 参数 | 类型 | 说明 | 约束 | 默认值 |
+|------|------|------|------|--------|
+| `name` | str | 索引名称 | 唯一标识，1<=长度<=50 | - |
+| `dim` | int | 向量维度 | 0<dim<=8192 | - |
+| `index_type` | int | 索引类型，0：BF, 1: IVF | - | - |
+| `cardids` | List | 使用的卡id列表 | - | - |
+
+**返回:** `True`（成功时）
+
+**异常:**
+- `RuntimeError`: 创建失败时抛出，包含错误详情
+
+
 ### 2. 删除索引
 
 ```python
@@ -304,6 +323,7 @@ def search_callback(
 3. 生产环境关闭 `debug` 模式减少日志开销
 
 > 注意：实际使用时请根据服务端支持的参数范围调整具体数值
+
 
 
 
