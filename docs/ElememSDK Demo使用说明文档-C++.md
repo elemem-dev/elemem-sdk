@@ -40,7 +40,7 @@ release
 构建环境请参考，使用Bazel进行程序编译：
 
 ```shell
-bazel build //:hilbert_client_demo
+bazel build //:cosmosx_client_demo
 ```
 
 ## 3. 程序运行
@@ -58,7 +58,7 @@ bazel build //:hilbert_client_demo
 ### 3.2 运行示例
 
 ```shell
-./bazel-bin/hilbert_client_demo --ip 192.168.1.100 --port 7000
+./bazel-bin/cosmosx_client_demo --ip 192.168.1.100 --port 7000
 ```
 
 ## 4. 功能说明
@@ -91,6 +91,8 @@ Connected to server at <IP>:<Port>
 - 删除数据（`remove`）
 - 更新数据（`update`）
 - 查询数据（`query`）
+- 保存索引（`save_index`）
+- 加载索引（`load_index`）
 
 每个操作执行成功后会输出相应的成功提示信息。
 

@@ -1,11 +1,11 @@
-# HilbertClient API 文档
+# CosmosXClient API 文档
 
 ## 1. 概述
 
-`HilbertClient` 是与 Hilbert 服务端通信的 C++ 客户端封装，支持以下功能：
+`CosmosXClient` 是与 CosmosX 服务端通信的 C++ 客户端封装，支持以下功能：
 
 - 索引管理：创建、删除、列举所有索引  
-- 数据操作：训练（train）、添加（add）、删除（remove)、查询（query)、更新（update)、搜索（search)  
+- 数据操作：训练（train）、添加（add）、删除（remove)、查询（query)、更新（update)、搜索（search)、保存索引(save_load)、加载索引(load_index)
 
 所有方法返回 `int32_t`，`0` 表示成功，非 `0` 表示失败。
 
@@ -45,7 +45,7 @@ struct Index {
 | `dim`          | `uint32_t`      | 向量维度，范围 `[1,8192]`                                    |
 | `nb`           | `uint32_t`      | 向量数量，nb最大值<6 * 1024^3 / 2 / dim * 0.95 * card_num                |
 | `index_type`   | `IndexType`     | 索引类型                                                     |
-| `replica_num`  | `uint32_t`      | 副本数，范围 `[0,2]`                                         |
+| `replica_num`  | `uint32_t`      | 副本数，范围 `[0,实际卡数]`                                         |
 
 ### 2.3 别名
 
@@ -54,13 +54,13 @@ using vec_id_t   = uint32_t;  // 向量 ID
 using vec_size_t = uint32_t;  // 向量数量
 ```
 
-## 3. 类 `HilbertClient`
+## 3. 类 `CosmosXClient`
 
 ```cpp
-class HilbertClient {
+class CosmosXClient {
 public:
-    HilbertClient();
-    virtual ~HilbertClient();
+    CosmosXClient();
+    virtual ~CosmosXClient();
     ...
 };
 ```
@@ -79,6 +79,9 @@ public:
 | `query`           | 根据 ID 查询向量              |
 | `update`          | 更新已有向量                  |
 | `search`          | 向量搜索                      |
+| `save_index`      | 存储index                     |
+| `load_index`      | 使用存储的训练数据创建index     |
+
 
 ### 3.2 详细说明
 
@@ -118,7 +121,7 @@ int32_t create_index(
 | ------------- | ------------------- | -------------------------------------------------------------------- |
 | name          | `std::string`       | 索引名称，字母/数字/下划线组成，长度 `[1,50]`                          |
 | dim           | `uint32_t`          | 向量维度，范围 `[1,8192]`                                            |
-| replica_num   | `uint32_t`          | 副本数，范围 `[0,2]`                                                  |
+| replica_num   | `uint32_t`          | 副本数，范围 `[0,2]`,已废弃                                           |
 | index_type    | `IndexType`         | 索引类型                                                              |
 | card_num      | `uint32_t`          | 卡数量，范围 `[1,8]`                                                  |
 
@@ -294,13 +297,13 @@ int32_t search(
 | dim        | `uint32_t`                   | 向量维度                                                         |
 | query      | `const float*`               | 查询数据，长度 = `nq * dim`                                     |
 | nprobe     | `uint32_t`                   | 探索簇数，不超过 `nlist`                                         |
-| k          | `uint32_t`                   | 返回最近邻居数，范围 `[1,4096]`                                 |
+| k          | `uint32_t`                   | 返回最近邻居数，范围 `[1,16384]`                                 |
 | distances  | `std::vector<float>&`        | 输出：距离列表，长度 = `nq * k`                                 |
 | ids        | `std::vector<vec_id_t>&`     | 输出：ID 列表，长度 = `nq * k`                                  |
 
 **前置条件**：  
 - `1 <= nq <= 1000`  
-- `1 <= k <= 4096`  
+- `1 <= k <= 16384`
 - `nprobe <= nlist`  
 - `1 <= dim <= 8192`  
 
@@ -310,3 +313,39 @@ int32_t search(
 > - 所有 `id` 参数（`remove`/`query`/`update`）**必须**来源于 `add` 返回的 `ids`。  
 > - IVF 索引时，`nlist` 为簇数，`nprobe` 为搜索时探索的簇数。  
 
+---
+
+#### `save_index`
+
+```cpp
+int32_t save_index(
+    const std::string & save_dir,
+    const std::string & name
+);
+```
+
+| 参数       | 类型                         | 说明                                                             |
+| ---------- | ---------------------------- | ----------------------------------------------------------------|
+| name       | `std::string`                | 索引名称，字母数字下划线组成，长度 [1,50]                          |
+| save_dir   | `std::string`                | 保存索引的目录                                                   |
+
+
+**返回**：`0` 成功；非 `0` 失败
+
+#### `load_index`
+
+```cpp
+int32_t load_index(
+    const std::string & file_path,
+    const std::string & name
+);
+```
+
+| 参数       | 类型                          | 说明                                                             |
+| ---------- | ---------------------------- | ---------------------------------------------------------------- |
+| name       | `std::string`                | 索引名称，字母数字下划线组成，长度 [1,50]                           |
+| file_path  | `std::string`                | 存储索引的文件                                                    |
+| card_num   | `uint32_t`                   | 卡数量，范围 [1,8]                                                |
+
+
+**返回**：`0` 成功；非 `0` 失败
