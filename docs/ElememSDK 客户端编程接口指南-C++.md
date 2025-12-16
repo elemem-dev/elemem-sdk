@@ -319,7 +319,7 @@ int32_t search(
 
 ```cpp
 int32_t save_index(
-    const std::string & save_dir,
+    const std::string & file_path,
     const std::string & name
 );
 ```
@@ -327,7 +327,7 @@ int32_t save_index(
 | 参数       | 类型                         | 说明                                                             |
 | ---------- | ---------------------------- | ----------------------------------------------------------------|
 | name       | `std::string`                | 索引名称，字母数字下划线组成，长度 [1,50]                          |
-| save_dir   | `std::string`                | 保存索引的目录                                                   |
+| file_path  | `std::string`                | 保存索引的文件路径                                                |
 
 
 **返回**：`0` 成功；非 `0` 失败
@@ -337,14 +337,15 @@ int32_t save_index(
 ```cpp
 int32_t load_index(
     const std::string & file_path,
-    const std::string & name
+    const std::string & name,
+    const uint32_t card_num = 1
 );
 ```
 
 | 参数       | 类型                          | 说明                                                             |
 | ---------- | ---------------------------- | ---------------------------------------------------------------- |
 | name       | `std::string`                | 索引名称，字母数字下划线组成，长度 [1,50]                           |
-| file_path  | `std::string`                | 存储索引的文件                                                    |
+| file_path  | `std::string`                | 索引文件路径                                                      |
 | card_num   | `uint32_t`                   | 卡数量，范围 [1,8]                                                |
 
 
