@@ -264,51 +264,6 @@ def load_index(file_path: str, index_name: str, card_num: int = 1) -> bool:
 
 **返回:** `True`（成功时）
 
-### 14. 异步搜索
-```python
-def async_search(index_name: str,
-                nq: int,
-                dim: int,
-                query_ids: list,
-                queries: np.ndarray,
-                nprobe: int,
-                k: int,
-                callback: callback_t) -> bool:
-```
-
-**参数说明：**
-| 参数 | 类型 | 说明 | 约束 |
-|------|------|------|------|
-| `index_name` | str | 索引名称 | 必须存在 |
-| `nq` | int | query数量 | 必须存在 |
-| `dim` | int | 维度 | query数据维度，应与底库数据维度一直 |
-| `query_ids` | list | 每一个query对应的唯一标识 | 数量应等于nq |
-| `queries` | np.ndarray | 需要查询的向量 | 大小为nq*dim |
-| `nprobe` | int | 搜索时探查的聚类簇数量 | 不超过nlist |
-| `k` | int | 每个向量的最近邻数量 |  |
-| `callback` | callback_t | 回调函数 | 函数签名如下 |
-
-**返回:** `True`（成功时）
-
-### 13. callback说明
-```python
-def search_callback(
-    query_id: int,
-    distances: list,
-    ids: list,
-    err_code: int
-)
-```
-
-**参数说明：**
-| 参数 | 类型 | 说明 | 约束 |
-|------|------|------|------|
-| `query_id` | int | 查询时的query唯一标识 |  |
-| `distances` | list | 查询结果的距离列表 |  |
-| `ids` | list | 查询结果的向量id列表 | |
-| `err_code` | int | 错误代码 | 0标识成功 |
-
-
 ## 错误处理
 
 所有方法可能抛出以下异常：
@@ -323,6 +278,7 @@ def search_callback(
 3. 生产环境关闭 `debug` 模式减少日志开销
 
 > 注意：实际使用时请根据服务端支持的参数范围调整具体数值
+
 
 
 
