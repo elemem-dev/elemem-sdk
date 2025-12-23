@@ -35,6 +35,7 @@ struct Index {
     uint32_t    nb;
     IndexType   index_type;
     uint32_t    replica_num;
+    std::vector<uint32_t> card_ids;
 };
 ```
 
@@ -46,6 +47,7 @@ struct Index {
 | `nb`           | `uint32_t`      | 向量数量，nb最大值<6 * 1024^3 / 2 / dim * 0.95 * card_num                |
 | `index_type`   | `IndexType`     | 索引类型                                                     |
 | `replica_num`  | `uint32_t`      | 副本数，范围 `[0,实际卡数]`                                         |
+| `card_ids`  | `std::vector<uint32_t>`      | 索引占用的cardid列表                                         |
 
 ### 2.3 别名
 
