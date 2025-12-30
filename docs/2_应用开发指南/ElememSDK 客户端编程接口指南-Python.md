@@ -245,7 +245,7 @@ def save_index(self, file_path: str, index_name: str) -> bool:
 **参数说明：**
 | 参数 | 类型 | 说明 | 约束 |
 |------|------|------|------|
-| `file_path` | str | 导出路径 | 必须存在，建议使用服务端绝对路径，如果填了相对路径，是相对于服务端运行路径的 |
+| `file_path` | str | 导出路径 | 必须不存在，服务端绝对路径，不支持相对路径 |
 | `index_name` | str | 索引名称 | 必须存在 |
 
 **返回:** `文件名称`（成功时不为空，失败为空串）
@@ -258,7 +258,7 @@ def load_index(file_path: str, index_name: str, card_num: int = 1) -> bool:
 **参数说明：**
 | 参数 | 类型 | 说明 | 约束 |
 |------|------|------|------|
-| `file_path` | str | 文件路径 | 必须存在，服务端绝对路径 |
+| `file_path` | str | 文件路径 | 必须存在，服务端绝对路径，不支持相对路径 |
 | `index_name` | str | 索引名称 | 必须存在 |
 | `card_num` | int | 使用卡的数量 | 默认为1 |
 
