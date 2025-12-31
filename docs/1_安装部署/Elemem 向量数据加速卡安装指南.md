@@ -299,9 +299,10 @@ sudo bash stop.sh
 ### 换卡
 
 下面以index名称为index_sift1m_d128为例，描述换卡的操作方法：
-1. 使用软件接口save，将index_sift1m_d128保存为index_sift1m_d128.index
-2. 换卡。换卡后重新开机启动软件。
-3. 使用删除接口删除index_sift1m_d128，调用load接口，加载文件index_sift1m_d128.index，将指定index还原到新卡上
+1. 备份index。使用软件接口save，将index_sift1m_d128保存为index_sift1m_d128.index
+2. 清空缓存数据。执行stop.sh脚本关闭所有进程，删除redis目录下的 dump.rdb 文件和 appendonlydir 文件夹
+3. 换卡。换卡后重新开机启动软件。
+5. 使用删除接口删除index_sift1m_d128，调用load接口，加载文件index_sift1m_d128.index，将指定index还原到新卡上
 
 ### 升级软件
 
