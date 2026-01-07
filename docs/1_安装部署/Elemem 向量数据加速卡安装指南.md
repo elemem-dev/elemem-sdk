@@ -14,6 +14,7 @@
 4. [固件程序安装]
 5. [软件程序安装]
 6. [软件升级方法]
+7. [常见问题]
 
 ---
 
@@ -321,4 +322,16 @@ sudo bash stop.sh
 ```
 替换完成后，重启服务即可完成升级
 
+## 常见问题
 
+### 1. 换卡后，之前的index无法使用
+- 原因：因为是存算一体的板卡，数据会跟着卡走，换卡后，系统还记录着旧卡的资源信息，index元数据保存的是旧卡的id，会导致指令找不到对应的卡，触发超时。
+- 解决办法：在换卡之前，备份需要的index到文件，换卡后，再通过备份文件导入到新卡。
+
+### 2. 清理无效的index资源
+- 原因：在创建index过程中执行ctrl+c，会偶现元数据不一致的问题，此时需要手动清理无效index资源。
+- 清理方法：
+1. 安装python的sdk，执行命令``` pip install elemem_vector_sdk```
+2. 查看sdk工具的路径，执行 ```pip show elemem_vector_sdk```，找到Location：```/home/${user}/.local/lib/python3.12/site-packages```
+3. 查询所有的index资源 ```python3 /home/${user}/.local/lib/python3.12/site-packages/elemem_sdk/rmi_client.py  all_index_alloc```
+4. 删除无效的index```python3 /home/${user}/.local/lib/python3.12/site-packages/elemem_sdk/rmi_client.py  release [ 需要清理的 index 名称 ]```
