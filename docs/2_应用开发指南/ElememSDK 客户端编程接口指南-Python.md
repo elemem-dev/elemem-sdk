@@ -147,6 +147,9 @@ vector_ids = client.add(name="my_index", data=vectors, mode_flag=0)
 - `ValueError`: 数据维度错误
 - `RuntimeError`: 添加失败
 
+**备注:**
+- 并发度不超过2，即最多两个index同时执行一次add，或者一个index同时执行两次add
+
 ## 查询操作
 
 ### 8. 向量搜索
@@ -263,6 +266,9 @@ def load_index(file_path: str, index_name: str, card_num: int = 1) -> bool:
 | `card_num` | int | 使用卡的数量 | 默认为1 |
 
 **返回:** `True`（成功时）
+
+**备注:**
+- 并发度不超过2，即同时最多两个load_index
 
 ## 错误处理
 
