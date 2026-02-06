@@ -89,7 +89,8 @@ indexes = client.query_all_index()
         'dim': 128,
         'nb': 10000,
         'replica_num': 1,
-        'index_type': 1
+        'index_type': 0，
+        'card_ids' : [161567125]
     },
     # ...其他索引
 ]
@@ -284,6 +285,7 @@ def load_index(file_path: str, index_name: str, card_num: int = 1) -> bool:
 3. 生产环境关闭 `debug` 模式减少日志开销
 
 > 注意：实际使用时请根据服务端支持的参数范围调整具体数值
+
 
 
 
